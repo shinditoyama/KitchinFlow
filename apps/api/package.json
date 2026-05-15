@@ -1,29 +1,28 @@
 {
-  "name": "@repo/db",
+  "name": "api",
   "version": "0.0.0",
   "private": true,
-  "exports": {
-    "./*": "./src/*.ts"
-  },
   "scripts": {
-    "dev": "tsup --watch",
-    "build": "tsup",
-    "db:generate": "drizzle-kit generate",
-    "db:push": "drizzle-kit push",
-    "db:seed": "tsx src/seed.ts"
+    "dev": "tsx watch src/server.ts",
+    "build": "tsup src/index.ts",
+    "start": "node dist/index.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@repo/db": "workspace:*",
+    "@repo/utils": "workspace:*",
+    "cors": "^2.8.6",
     "dotenv": "^17.4.2",
-    "drizzle-orm": "^0.45.2",
-    "postgres": "^3.4.9"
+    "express": "^5.2.1"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
     "@repo/typescript-config": "workspace:*",
-    "drizzle-kit": "^0.31.10",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/node": "^22.15.3",
     "tsup": "^8.5.1",
     "tsx": "^4.21.0",
     "typescript": "5.9.2"
