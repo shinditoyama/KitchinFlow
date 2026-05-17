@@ -8,6 +8,16 @@ import {
   timestamp,
 } from "drizzle-orm/pg-core";
 
+export const users = pgTable("users", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  name: text("name").notNull(),
+  email: text("email").unique().notNull(),
+  password: text("password").notNull(),
+  role: text("role", { enum: ["admin", "user"] })
+    .default("user")
+    .notNull(),
+});
+
 export const categories = pgTable("categories", {
   id: uuid("id").defaultRandom().primaryKey(),
   name: text("name").notNull(), // Ex: "Entradas", "Bebidas"

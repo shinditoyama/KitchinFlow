@@ -6,6 +6,8 @@
       "@repo/db": ["../../packages/db/src/index.ts"],
       "@repo/utils": ["../../packages/utils/src/index.ts"]
     }
+    //"outDir": "./dist",
+    //"rootDir": "./src"
   },
   "include": ["src"],
   "exclude": ["node_modules", "dist"]

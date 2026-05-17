@@ -1,18 +1,18 @@
-import { AppError } from "@/middlewares/error-handler";
 import { db, eq } from "@repo/db";
 import { categories } from "@repo/db/schema";
-import { CategoryInput } from "@repo/utils/validation";
+import { CategoryInput } from "@repo/utils/validation/category";
+import { AppError } from "@/middlewares/error-handler";
 
 export class CategoryService {
   async create(data: CategoryInput) {
     return await db.insert(categories).values(data).returning();
   }
 
-  async listAll() {
+  async list() {
     return await db.select().from(categories);
   }
 
-  async getById(id: string) {
+  async findById(id: string) {
     const [result] = await db
       .select()
       .from(categories)

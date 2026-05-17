@@ -10,25 +10,25 @@ export class CategoryController {
   }
 
   async getAll(_: Request, res: Response) {
-    const data = await category.listAll();
+    const data = await category.list();
     res.status(200).json(data);
   }
 
   async getOne(req: Request, res: Response) {
-    const id = req.params.id as string;
-    const data = await category.getById(id);
+    const { id } = req.params;
+    const data = await category.findById(String(id));
     res.status(200).json(data);
   }
 
   async update(req: Request, res: Response) {
-    const id = req.params.id as string;
-    const data = await category.update(id, req.body);
+    const { id } = req.params;
+    const data = await category.update(String(id), req.body);
     res.status(200).json(data);
   }
 
   async remove(req: Request, res: Response) {
-    const id = req.params.id as string;
-    await category.delete(id);
+    const { id } = req.params;
+    await category.delete(String(id));
     res.status(204).send();
   }
 }

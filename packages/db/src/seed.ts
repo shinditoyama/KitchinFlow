@@ -1,14 +1,35 @@
 import "dotenv/config"; // IMPORTANTE: Carrega o .env antes de tudo
 import { db } from "./index";
-import { categories, products } from "./schema";
+import { categories, products, users } from "./schema";
+import { hash } from "bcrypt";
 
 async function main() {
   console.log("🌱 Iniciando o seeding...");
 
+  const adminPasswordHash = await hash("admin@123", 8);
+  const customerPasswordHash = await hash("cliente@123", 8);
+
   try {
     // 1. Limpar tabelas (opcional, cuidado em produção!)
+    await db.delete(users);
     await db.delete(categories);
     await db.delete(products);
+
+    // 2. Inserir Usuario
+    await db.insert(users).values([
+      {
+        name: "Administrador",
+        email: "admin@admin.com",
+        password: adminPasswordHash,
+        role: "admin",
+      },
+      {
+        name: "Cliente Teste",
+        email: "teste@teste.com",
+        password: customerPasswordHash,
+        role: "user",
+      },
+    ]);
 
     // 2. Inserir Categoria
     const catList = await db
@@ -18,6 +39,7 @@ async function main() {
 
     const [catEntradas, catPrincipais] = catList;
 
+    // 3. Inserir Produto
     await db.insert(products).values([
       {
         name: "Bruschetta",

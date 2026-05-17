@@ -11,12 +11,12 @@ export class AppError extends Error {
   }
 }
 
-export const errorHandler = (
+export function errorHandler(
   err: Error,
   req: Request,
   res: Response,
   next: NextFunction,
-) => {
+) {
   // Erros de Validação (Zod)
   if (err instanceof ZodError) {
     return res.status(400).json({
@@ -42,6 +42,6 @@ export const errorHandler = (
 
   return res.status(500).json({
     status: err.name,
-    message: "Ocorreu um erro interno inesperado no servidor.",
+    message: err.message,
   });
-};
+}
