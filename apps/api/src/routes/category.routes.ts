@@ -10,8 +10,8 @@ const router: Router = Router();
 router.post(
   "/",
   validate(insertCategorySchema),
-  isAuthenticated,
-  isAdmin,
+  /*isAuthenticated,
+  isAdmin,*/
   new CategoryController().create,
 );
 router.get("/", new CategoryController().getAll);
@@ -21,6 +21,6 @@ router.patch(
   validate(insertCategorySchema),
   new CategoryController().update,
 );
-router.delete("/:id", new CategoryController().remove);
+router.delete("/", new CategoryController().remove);
 
 export default router;

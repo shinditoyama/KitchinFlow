@@ -8,5 +8,7 @@ export const insertCategorySchema = createInsertSchema(categories, {
 
 export const selectCategorySchema = createSelectSchema(categories);
 
-export type CategoryInput = z.infer<typeof insertCategorySchema>;
+// Tipo exportado para o React Hook Form
+export type CategoryFormValues = z.infer<typeof insertCategorySchema>;
+
 export type CategoryResponse = z.infer<typeof selectCategorySchema>;

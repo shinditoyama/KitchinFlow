@@ -1,15 +1,27 @@
 import { AppError } from "@/middlewares/error-handler";
-import { db, eq } from "@repo/db";
+import { asc, db, eq } from "@repo/db";
 import { products } from "@repo/db/schema";
-import { ProductInput } from "@repo/utils/validation/product";
+import { ProductFormValues } from "@repo/utils/validation/product";
 
 export class ProductService {
-  async create(data: ProductInput) {
+  async create(data: ProductFormValues) {
     return await db.insert(products).values(data).returning();
   }
 
   async list() {
-    return await db.select().from(products);
+    const result = await db.query.products.findMany({
+      with: {
+        category: {
+          columns: {
+            id: true,
+            name: true,
+          },
+        },
+      },
+      orderBy: [asc(products.name)],
+    });
+
+    return result;
   }
 
   async findById(id: string) {
@@ -23,7 +35,7 @@ export class ProductService {
     return result;
   }
 
-  async update(id: string, data: Partial<ProductInput>) {
+  async update(id: string, data: Partial<ProductFormValues>) {
     const [result] = await db
       .update(products)
       .set(data)
@@ -35,6 +47,16 @@ export class ProductService {
         "Não foi possível atualizar: produto não encontrada",
         404,
       );
+
+    return result;
+  }
+
+  async toggleActive(id: string, isActive: boolean) {
+    const [result] = await db
+      .update(products)
+      .set({ isActive })
+      .where(eq(products.id, id))
+      .returning();
 
     return result;
   }

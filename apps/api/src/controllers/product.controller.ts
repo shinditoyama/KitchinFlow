@@ -26,8 +26,23 @@ export class ProductController {
     res.status(200).json(data);
   }
 
-  async remove(req: Request, res: Response) {
+  async toggle(req: Request, res: Response) {
     const { id } = req.params;
+    const { isActive } = req.body;
+
+    if (typeof isActive !== "boolean") {
+      res
+        .status(400)
+        .json({ error: "O campo 'isActive' deve ser um booleano." });
+      return;
+    }
+
+    const data = await product.toggleActive(String(id), isActive);
+    res.status(200).json(data);
+  }
+
+  async remove(req: Request, res: Response) {
+    const id = req.query.id;
     await product.delete(String(id));
     res.status(204).send();
   }

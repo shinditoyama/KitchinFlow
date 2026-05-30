@@ -13,6 +13,7 @@ router.patch(
   validate(insertProductSchema),
   new ProductController().update,
 );
-router.delete("/:id", new ProductController().remove);
+router.patch("/:id/status", new ProductController().toggle);
+router.delete("/", new ProductController().remove);
 
 export default router;

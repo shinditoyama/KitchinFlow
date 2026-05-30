@@ -18,3 +18,10 @@ export const selectUserSchema = createSelectSchema(users).omit({
 
 export type UserInput = z.infer<typeof insertUserSchema>;
 export type UserResponse = z.infer<typeof selectUserSchema>;
+
+/*
+ .regex(/(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])/, {
+      message:
+        "パスワードは数字・英小文字・英大文字をそれぞれ1文字以上使用してください",
+    }),
+*/

@@ -1,15 +1,25 @@
-import { db, eq } from "@repo/db";
-import { categories } from "@repo/db/schema";
-import { CategoryInput } from "@repo/utils/validation/category";
+import { db, eq, count } from "@repo/db";
+import { categories, products } from "@repo/db/schema";
+import { CategoryFormValues } from "@repo/utils/validation/category";
 import { AppError } from "@/middlewares/error-handler";
 
 export class CategoryService {
-  async create(data: CategoryInput) {
+  async create(data: CategoryFormValues) {
     return await db.insert(categories).values(data).returning();
   }
 
   async list() {
-    return await db.select().from(categories);
+    const result = await db
+      .select({
+        id: categories.id,
+        name: categories.name,
+        count: count(products.id),
+      })
+      .from(categories)
+      .leftJoin(products, eq(products.categoryId, categories.id))
+      .groupBy(categories.id);
+
+    return result;
   }
 
   async findById(id: string) {
@@ -23,7 +33,7 @@ export class CategoryService {
     return result;
   }
 
-  async update(id: string, data: Partial<CategoryInput>) {
+  async update(id: string, data: Partial<CategoryFormValues>) {
     const [result] = await db
       .update(categories)
       .set(data)

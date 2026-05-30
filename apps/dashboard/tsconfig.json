@@ -8,7 +8,8 @@
     ],
     "paths": {
       "@/*": ["./src/*"],
-      "@repo/ui/*": ["../../packages/ui/src/*"]
+      "@backend/*": ["../api/src/*"]
+      // "@repo/ui/*": ["../../packages/ui/src/*"]
     },
     "strictNullChecks": true
   },

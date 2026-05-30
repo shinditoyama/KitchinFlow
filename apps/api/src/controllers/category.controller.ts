@@ -27,7 +27,7 @@ export class CategoryController {
   }
 
   async remove(req: Request, res: Response) {
-    const { id } = req.params;
+    const id = req.query.id;
     await category.delete(String(id));
     res.status(204).send();
   }

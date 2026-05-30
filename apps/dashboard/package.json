@@ -11,10 +11,17 @@
     "check-types": "next typegen && tsc --noEmit"
   },
   "dependencies": {
+    "@hookform/resolvers": "^5.4.0",
     "@repo/ui": "workspace:*",
+    "@repo/utils": "workspace:*",
+    "@tanstack/react-table": "^8.21.3",
+    "@uploadthing/react": "^7.3.3",
     "next": "16.2.0",
+    "next-themes": "^0.4.6",
     "react": "^19.2.0",
-    "react-dom": "^19.2.0"
+    "react-dom": "^19.2.0",
+    "react-hook-form": "^7.76.1",
+    "zustand": "^5.0.13"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
