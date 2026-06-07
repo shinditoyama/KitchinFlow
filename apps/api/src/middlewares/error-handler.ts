@@ -1,13 +1,15 @@
 import { Request, Response, NextFunction } from "express";
 import { ZodError } from "@repo/utils";
 
-export class AppError extends Error {
-  public readonly statusCode: number;
+export class HttpException extends Error {
+  statusCode: number;
+  message: string;
 
-  constructor(message: string, statusCode = 400) {
+  constructor(statusCode: number, message: string) {
     super(message);
     this.statusCode = statusCode;
-    Object.setPrototypeOf(this, AppError.prototype);
+    this.message = message;
+    // Object.setPrototypeOf(this, HttpException.prototype);
   }
 }
 
@@ -29,8 +31,7 @@ export function errorHandler(
     });
   }
 
-  // Erros de Regra de Negócio (AppError)
-  if (err instanceof AppError) {
+  if (err instanceof HttpException) {
     return res.status(err.statusCode).json({
       status: err.name,
       message: err.message,
@@ -39,7 +40,6 @@ export function errorHandler(
 
   // Erros Desconhecidos (Fallback)
   console.error("❌ INTERNAL SERVER ERROR:", err);
-
   return res.status(500).json({
     status: err.name,
     message: err.message,

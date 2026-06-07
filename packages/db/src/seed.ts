@@ -1,5 +1,5 @@
 import "dotenv/config"; // IMPORTANTE: Carrega o .env antes de tudo
-import { db } from "./index";
+import { db } from "./config";
 import { categories, products, users } from "./schema";
 import { hash } from "bcrypt";
 
@@ -34,10 +34,14 @@ async function main() {
     // 2. Inserir Categoria
     const catList = await db
       .insert(categories)
-      .values([{ name: "Entradas" }, { name: "Principais" }])
+      .values([
+        { name: "Entradas" },
+        { name: "Principais" },
+        { name: "Bebidas" },
+      ])
       .returning();
 
-    const [catEntradas, catPrincipais] = catList;
+    const [catEntradas, catPrincipais, catBebidas] = catList;
 
     // 3. Inserir Produto
     await db.insert(products).values([
@@ -64,6 +68,30 @@ async function main() {
         categoryId: catPrincipais?.id,
         image:
           "https://images.unsplash.com/photo-1544025162-d76694265947?w=300",
+      },
+      {
+        name: "Salmão Grelhado",
+        description: "Salmão com legumes e batatas",
+        price: 59.9,
+        categoryId: catPrincipais?.id,
+        image:
+          "https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=300",
+      },
+      {
+        name: "Risoto de Cogumelos",
+        description: "Risoto cremoso com cogumelos frescos",
+        price: 49.9,
+        categoryId: catPrincipais?.id,
+        image:
+          "https://images.unsplash.com/photo-1476124369491-e7addf5db371?w=300",
+      },
+      {
+        name: "Caipirinha",
+        description: "Cachaça, limão e açúcar",
+        price: 18.9,
+        categoryId: catBebidas?.id,
+        image:
+          "https://images.unsplash.com/photo-1551538827-9c037cb4f32a?w=300",
       },
     ]);
 

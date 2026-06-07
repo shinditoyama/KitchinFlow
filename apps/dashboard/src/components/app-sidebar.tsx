@@ -1,12 +1,12 @@
 "use client";
 
 import {
-  CalendarDaysIcon,
-  ChevronRightIcon,
-  ChevronUpIcon,
-  LayoutDashboardIcon,
-  PizzaIcon,
-  UtensilsCrossedIcon,
+  ChevronRight,
+  ChevronUp,
+  LayoutDashboard,
+  Map,
+  Pizza,
+  UtensilsCrossed,
 } from "@repo/ui";
 import { Avatar, AvatarFallback } from "@repo/ui/components/avatar";
 import {
@@ -34,9 +34,9 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const itensMenu = [
-  { title: "Dashboard", url: "/", icon: LayoutDashboardIcon },
+  { title: "Dashboard", url: "/", icon: LayoutDashboard },
   // { title: "Cardápio", url: "/product", icon: UtensilsCrossed },
-  { title: "Reservas", url: "/reservation", icon: CalendarDaysIcon },
+  { title: "Pedidos", url: "/order", icon: Map },
   //{ title: "Mapa do Salão", url: "/table", icon: Map },
   //{ title: "Delivery", url: "/delivery", icon: Truck },
   //{ title: "Cupons", url: "/coupon", icon: Tag },
@@ -51,7 +51,7 @@ export function AppSidebar() {
       <SidebarHeader className="py-6 px-4">
         <div className="flex items-center gap-3 px-2">
           <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-lg">
-            <PizzaIcon className="h-5 w-5" />
+            <Pizza className="h-5 w-5" />
           </div>
           <div className="flex flex-col overflow-hidden group-data-[collapsible=icon]:hidden">
             <span className="font-bold leading-none tracking-tight">
@@ -110,12 +110,12 @@ export function AppSidebar() {
                       tooltip="Cardápio"
                       className="hover:bg-accent/50 text-muted-foreground hover:text-foreground transition-all duration-200 group-data-[collapsible=icon]:justify-center"
                     >
-                      <UtensilsCrossedIcon />
-                      <span className="group-data-[collapsible=icon]:hidden">
+                      <UtensilsCrossed />
+                      <span className="group-data-[collapsible=icon]:hidden ml-1">
                         Cardápio
                       </span>
                       {/* Setinha que gira 90° quando aberto */}
-                      <ChevronRightIcon className="ml-auto h-4 w-4 transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90 group-data-[collapsible=icon]:hidden" />
+                      <ChevronRight className="ml-auto h-4 w-4 transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90 group-data-[collapsible=icon]:hidden" />
                     </SidebarMenuButton>
                   </CollapsibleTrigger>
 
@@ -200,7 +200,7 @@ export function AppSidebar() {
                 <span className="font-medium leading-none">João Dono</span>
                 <span className="text-xs mt-1">Loja Aberta</span>
               </div>
-              <ChevronUpIcon className="ml-auto h-4 w-4 text-muted-foreground group-data-[collapsible=icon]:hidden" />
+              <ChevronUp className="ml-auto h-4 w-4 text-muted-foreground group-data-[collapsible=icon]:hidden" />
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>

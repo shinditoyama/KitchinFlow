@@ -8,6 +8,13 @@
       "when": 1778968905853,
       "tag": "0000_dry_jean_grey",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1780352581800,
+      "tag": "0001_careless_risque",
+      "breakpoints": true
     }
   ]
 }

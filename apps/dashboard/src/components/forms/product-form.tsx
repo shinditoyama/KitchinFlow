@@ -4,7 +4,10 @@ import Image from "next/image";
 import { useEffect, useState, useTransition } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { UploadIcon, TrashIcon, toast } from "@repo/ui";
+import {
+  insertProductSchema,
+  InsertProduct,
+} from "@repo/utils/validation/product";
 
 import { Button } from "@repo/ui/components/button";
 import { DialogFooter } from "@repo/ui/components/dialog";
@@ -29,14 +32,10 @@ import {
 import { Spinner } from "@repo/ui/components/spinner";
 import { Switch } from "@repo/ui/components/switch";
 import { Textarea } from "@repo/ui/components/textarea";
-
 import { createProduct, updateProduct } from "@/actions/product";
-import {
-  insertProductSchema,
-  ProductFormValues,
-} from "@repo/utils/validation/product";
 import { useUploadThing } from "@/lib/uploadthing";
 import { useCategoryStore } from "@/store/use-category";
+import { UploadIcon, TrashIcon, toast } from "@repo/ui";
 
 interface ProductFormProps {
   initialData?: IProduct;
@@ -62,7 +61,7 @@ export function ProductForm({ initialData, onSuccess }: ProductFormProps) {
 
   const isLoading = isPending || isUploading;
 
-  const form = useForm<ProductFormValues>({
+  const form = useForm<InsertProduct>({
     resolver: zodResolver(insertProductSchema),
     defaultValues: {
       name: initialData?.name || "",
@@ -74,7 +73,7 @@ export function ProductForm({ initialData, onSuccess }: ProductFormProps) {
     },
   });
 
-  const onSubmit = (data: ProductFormValues) => {
+  const onSubmit = (data: InsertProduct) => {
     if (!file && !isEditing && !data.image) {
       toast.error("Por favor, selecione uma imagem.");
       return;
@@ -130,7 +129,7 @@ export function ProductForm({ initialData, onSuccess }: ProductFormProps) {
         // Se o servidor retornou erros específicos de campos, joga de volta pro Hook Form
         if (response.errors) {
           Object.entries(response.errors).forEach(([key, messages]) => {
-            form.setError(key as keyof ProductFormValues, {
+            form.setError(key as keyof InsertProduct, {
               type: "server",
               message: messages?.[0],
             });
@@ -312,7 +311,7 @@ export function ProductForm({ initialData, onSuccess }: ProductFormProps) {
                 <Switch
                   id="switch-share"
                   name={field.name}
-                  checked={field.value ?? undefined}
+                  checked={field.value}
                   onCheckedChange={field.onChange}
                   aria-invalid={fieldState.invalid}
                 />

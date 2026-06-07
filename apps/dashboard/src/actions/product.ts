@@ -2,8 +2,9 @@
 
 import { apiFetch } from "@/lib/api";
 import {
+  InsertProduct,
   insertProductSchema,
-  ProductFormValues,
+  UpdateProduct,
 } from "@repo/utils/validation/product";
 import { revalidatePath } from "next/cache";
 
@@ -11,7 +12,7 @@ export async function getProducts() {
   return await apiFetch<IProduct[]>("/api/products");
 }
 
-export async function createProduct(data: ProductFormValues) {
+export async function createProduct(data: InsertProduct) {
   const validatedFields = insertProductSchema.safeParse(data);
 
   if (!validatedFields.success) {
@@ -38,7 +39,7 @@ export async function createProduct(data: ProductFormValues) {
   }
 }
 
-export async function updateProduct(id: string, data: ProductFormValues) {
+export async function updateProduct(id: string, data: UpdateProduct) {
   const validatedFields = insertProductSchema.safeParse(data);
 
   if (!validatedFields.success) {
@@ -50,7 +51,7 @@ export async function updateProduct(id: string, data: ProductFormValues) {
 
   try {
     await apiFetch(`/api/products/${id}`, {
-      method: "PATCH",
+      method: "PUT",
       body: JSON.stringify(validatedFields.data),
     });
 
@@ -82,11 +83,10 @@ export async function deleteProduct(id: string) {
   }
 }
 
-export async function toggleProduct(id: string, isActive: boolean) {
+export async function toggleProduct(id: string) {
   try {
     await apiFetch(`/api/products/${id}/status`, {
       method: "PATCH",
-      body: JSON.stringify({ isActive }),
     });
 
     revalidatePath("/product");

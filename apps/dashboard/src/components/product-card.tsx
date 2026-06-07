@@ -11,7 +11,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@repo/ui/components/card";
-import { ProductDeleteButton } from "./forms/product-delete";
+// import { ProductDeleteButton } from "./forms/product-delete";
 import { ProductDialog } from "./forms/product-dialog";
 
 interface ProductCardProps {
@@ -69,7 +69,7 @@ export function ProductCard({ item }: ProductCardProps) {
 
       <CardFooter className="px-4 flex gap-2 mt-auto">
         <ProductDialog product={item} />
-        <ProductDeleteButton id={item.id} />
+        {/* <ProductDeleteButton id={item.id} /> */}
       </CardFooter>
     </Card>
   );

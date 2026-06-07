@@ -31,3 +31,27 @@ interface IProduct {
   categoryId: string;
   category: ICategory;
 }
+
+interface IOrder {
+  id: string;
+  table: string;
+  draft: boolean;
+  status: string;
+  items: [IOrderItem];
+  createdAt: Date;
+}
+
+interface IOrderItem {
+  id: string;
+  amount: number;
+  product: IProduct;
+}
+
+interface IMesa {
+  id: string;
+  number: number;
+  capacity: number;
+  status: "disponivel" | "ocupada" | "reservada";
+  //posX: number;
+  //posY: number;
+}

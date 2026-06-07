@@ -1,78 +1,44 @@
-import { AppError } from "@/middlewares/error-handler";
-import { asc, db, eq } from "@repo/db";
-import { products } from "@repo/db/schema";
-import { ProductFormValues } from "@repo/utils/validation/product";
+import { ProductRepository } from "@repo/db";
+import { InsertProduct } from "@repo/utils/validation/product";
+import { HttpException } from "@/middlewares/error-handler";
 
 export class ProductService {
-  async create(data: ProductFormValues) {
-    return await db.insert(products).values(data).returning();
+  private repository: ProductRepository;
+  constructor() {
+    this.repository = new ProductRepository();
   }
 
-  async list() {
-    const result = await db.query.products.findMany({
-      with: {
-        category: {
-          columns: {
-            id: true,
-            name: true,
-          },
-        },
-      },
-      orderBy: [asc(products.name)],
-    });
+  async getAllProducts() {
+    return await this.repository.findAll();
+  }
+
+  async getProductById(id: string) {
+    const result = await this.repository.findById(id);
+    if (!result) throw new HttpException(404, "Produto não encontrada");
 
     return result;
   }
 
-  async findById(id: string) {
-    const [result] = await db
-      .select()
-      .from(products)
-      .where(eq(products.id, id));
+  async createProduct(data: InsertProduct) {
+    return await this.repository.create(data);
+  }
 
-    if (!result) throw new AppError("Produto não encontrada", 404);
+  async updateProduct(id: string, data: Partial<InsertProduct>) {
+    const result = await this.repository.update(id, data);
+    if (!result) throw new HttpException(404, "ID do produto não encontrada");
 
     return result;
   }
 
-  async update(id: string, data: Partial<ProductFormValues>) {
-    const [result] = await db
-      .update(products)
-      .set(data)
-      .where(eq(products.id, id))
-      .returning();
-
-    if (!result)
-      throw new AppError(
-        "Não foi possível atualizar: produto não encontrada",
-        404,
-      );
+  async deleteProduct(id: string) {
+    const result = await this.repository.delete(id);
+    if (!result) throw new HttpException(404, "ID do produto não encontrada");
 
     return result;
   }
 
-  async toggleActive(id: string, isActive: boolean) {
-    const [result] = await db
-      .update(products)
-      .set({ isActive })
-      .where(eq(products.id, id))
-      .returning();
-
-    return result;
-  }
-
-  async delete(id: string) {
-    const [result] = await db
-      .delete(products)
-      .where(eq(products.id, id))
-      .returning();
-
-    if (!result)
-      throw new AppError(
-        "Não foi possível excluir: produto não encontrada",
-        404,
-      );
-
+  async toggleProduct(id: string) {
+    const result = await this.repository.toggle(id);
     return result;
   }
 }

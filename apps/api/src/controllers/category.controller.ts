@@ -1,34 +1,38 @@
 import { Request, Response } from "express";
 import { CategoryService } from "@/services/category.service";
-
-const category = new CategoryService();
+import { HttpException } from "@/middlewares/error-handler";
 
 export class CategoryController {
-  async create(req: Request, res: Response) {
-    const [newCategory] = await category.create(req.body);
+  private service: CategoryService;
+  constructor() {
+    this.service = new CategoryService();
+  }
+
+  getAll = async (_: Request, res: Response) => {
+    const data = await this.service.getAllCategories();
+    res.status(200).json(data);
+  };
+
+  getById = async (req: Request, res: Response) => {
+    const { id } = req.params;
+    const data = await this.service.getCategoryById(String(id));
+    res.status(200).json(data);
+  };
+
+  create = async (req: Request, res: Response) => {
+    const newCategory = await this.service.createCategory(req.body);
     res.status(201).json(newCategory);
-  }
+  };
 
-  async getAll(_: Request, res: Response) {
-    const data = await category.list();
-    res.status(200).json(data);
-  }
-
-  async getOne(req: Request, res: Response) {
+  update = async (req: Request, res: Response) => {
     const { id } = req.params;
-    const data = await category.findById(String(id));
+    const data = await this.service.updateCategory(String(id), req.body);
     res.status(200).json(data);
-  }
+  };
 
-  async update(req: Request, res: Response) {
-    const { id } = req.params;
-    const data = await category.update(String(id), req.body);
-    res.status(200).json(data);
-  }
-
-  async remove(req: Request, res: Response) {
+  delete = async (req: Request, res: Response) => {
     const id = req.query.id;
-    await category.delete(String(id));
+    await this.service.deleteCategory(String(id));
     res.status(204).send();
-  }
+  };
 }

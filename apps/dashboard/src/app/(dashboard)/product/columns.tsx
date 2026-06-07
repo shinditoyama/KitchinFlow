@@ -54,7 +54,7 @@ export const columns: ColumnDef<IProduct>[] = [
 
       const handleToggle = (checked: boolean) => {
         startTransition(async () => {
-          const response = await toggleProduct(product.id, checked);
+          const response = await toggleProduct(product.id);
 
           if (response.success) {
             toast.success(checked ? "Produto ativado!" : "Produto desativado!");

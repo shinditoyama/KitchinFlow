@@ -2,8 +2,9 @@
 
 import { apiFetch } from "@/lib/api";
 import {
-  CategoryFormValues,
+  InsertCategory,
   insertCategorySchema,
+  UpdateCategory,
 } from "@repo/utils/validation/category";
 import { revalidatePath } from "next/cache";
 
@@ -11,7 +12,7 @@ export async function getCategories() {
   return await apiFetch<ICategory[]>("/api/categories");
 }
 
-export async function createCategory(data: CategoryFormValues) {
+export async function createCategory(data: InsertCategory) {
   const validatedFields = insertCategorySchema.safeParse(data);
 
   if (!validatedFields.success) {
@@ -38,7 +39,7 @@ export async function createCategory(data: CategoryFormValues) {
   }
 }
 
-export async function updateCategory(id: string, data: CategoryFormValues) {
+export async function updateCategory(id: string, data: UpdateCategory) {
   const validatedFields = insertCategorySchema.safeParse(data);
 
   if (!validatedFields.success) {
@@ -50,7 +51,7 @@ export async function updateCategory(id: string, data: CategoryFormValues) {
 
   try {
     await apiFetch(`/api/categories/${id}`, {
-      method: "PATCH",
+      method: "PUT",
       body: JSON.stringify(validatedFields.data),
     });
 

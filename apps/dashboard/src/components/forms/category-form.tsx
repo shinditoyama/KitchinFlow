@@ -18,7 +18,7 @@ import { Spinner } from "@repo/ui/components/spinner";
 
 import { createCategory, updateCategory } from "@/actions/category";
 import {
-  CategoryFormValues,
+  InsertCategory,
   insertCategorySchema,
 } from "@repo/utils/validation/category";
 
@@ -31,12 +31,12 @@ export function CategoryForm({ initialData, onSuccess }: CategoryFormProps) {
   const [isPending, startTransition] = useTransition();
   const isEditing = !!initialData;
 
-  const form = useForm<CategoryFormValues>({
+  const form = useForm<InsertCategory>({
     resolver: zodResolver(insertCategorySchema),
     defaultValues: { name: initialData?.name || "" },
   });
 
-  const onSubmit = (data: CategoryFormValues) => {
+  const onSubmit = (data: InsertCategory) => {
     const toastId = toast.loading(
       isEditing ? "Atualizando categoria..." : "Criando categoria...",
     );
@@ -64,7 +64,7 @@ export function CategoryForm({ initialData, onSuccess }: CategoryFormProps) {
         // Se o servidor retornou erros específicos de campos, joga de volta pro Hook Form
         if (response.errors) {
           Object.entries(response.errors).forEach(([key, messages]) => {
-            form.setError(key as keyof CategoryFormValues, {
+            form.setError(key as keyof InsertCategory, {
               type: "server",
               message: messages?.[0],
             });
